@@ -1,10 +1,11 @@
 {
   "name": "webrtc-analyzer",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "WebRTC Connection Analyzer",
   "main": "export.js",
   "scripts": {
-    "build": "webpack --config webpack.prod.js"
+    "build": "webpack --config webpack.prod.js",
+    "prettify": "prettier --config .prettierrc --write \"src/**/!(Lesshat).{less,js}\""
   },
   "repository": "https://github.com/DoclerLabs/webrtc-analyzer",
   "author": "Gabriel Micko <micsko@gmail.com>",
