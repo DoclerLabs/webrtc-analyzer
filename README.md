@@ -16,7 +16,7 @@ This tool helps you to debug WebRTC connections.
 - The debuggers position could be changed by the user. (left, top, right, bottom)
 - React based
 
-![WebRTC-Analyzer](https://i.imgur.com/UXiWYij.png){:width="350px"}
+![WebRTC-Analyzer](https://i.imgur.com/8eLNbUQ.png)
 
 ### Example code
 
