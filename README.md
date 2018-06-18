@@ -23,8 +23,8 @@ This tool helps you to debug WebRTC connections.
 ##### Instance
 
 ```js
-import Analyzer from "analyzer";
-let analyzer = new Analyzer(options);
+import WebRTCAnalyzer from "webrtc-analyzer";
+let wa = new WebRTCAnalyzer(options);
 ```
 
 ##### Options (public):
