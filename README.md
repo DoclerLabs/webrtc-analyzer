@@ -15,6 +15,7 @@ This tool helps you to debug WebRTC connections.
 - User is able to customize what he/she wants to see
 - The debuggers position could be changed by the user. (left, top, right, bottom)
 - React based
+- Support for multiple RTCPeerConnection instances
 
 ![WebRTC-Analyzer](https://i.imgur.com/8eLNbUQ.png)
 
@@ -37,7 +38,7 @@ let wa = new WebRTCAnalyzer(options);
 ```js
 {
     selector: '.stats', // String - body by default
-    peerConnection: this.pc, // Object - required
+    peerConnection: peerConnectionInstance, // Object - required
     interval: 3000 //Number - 3000 by default
     isVisible: true, //Boolean - true by default
 }
