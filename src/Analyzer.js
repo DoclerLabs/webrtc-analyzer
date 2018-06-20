@@ -51,7 +51,10 @@ class Analyzer {
   }
 
   clearStage() {
-    this.body.querySelector('#' + this.id).remove();
+    let elementToBeRemoved = this.body.querySelector('#' + this.id);
+    if (elementToBeRemoved !== null) {
+      this.body.querySelector('#' + this.id).remove();
+    }
   }
 
   renderToStage(table) {
