@@ -1,20 +1,19 @@
 import generateStyle from './Style.js';
+import { generateRandom } from './String';
 
 class Analyzer {
   constructor(settings) {
     let defaults = {
-      selector: 'body',
       peerConnection: null,
       interval: 3000,
       isVisible: true
     };
     this.options = { ...defaults, ...settings };
 
-    this.element = document.querySelector(this.options.selector);
+    this.body = document.querySelector('body');
 
-    if (this.element === null) {
-      throw new Error('[Analyzer]: Not able to render to the element.');
-    }
+    this.id = generateRandom(10, false, true, false);
+
     if (this.options.peerConnection instanceof RTCPeerConnection === false) {
       throw new Error('[Analyzer]: peerConnection must be an instance of RTCPeerConnection.');
     }
@@ -52,11 +51,15 @@ class Analyzer {
   }
 
   clearStage() {
-    this.element.innerHTML = '';
+    this.body.querySelector('#' + this.id).remove();
   }
 
   renderToStage(table) {
-    this.element.innerHTML = table;
+    let aElement = document.createElement('div');
+    aElement.id = this.id;
+    aElement.innerHTML = table;
+
+    this.body.appendChild(aElement);
   }
 
   generateFromObject(object) {
@@ -75,7 +78,7 @@ class Analyzer {
   }
 
   render(stats) {
-    let scrollBarMain = document.querySelector(this.options.selector + ' .webrtc-analyzer main');
+    let scrollBarMain = document.querySelector(`body #${this.id} .webrtc-analyzer main`);
 
     let rememberScrollTop = 0;
     if (scrollBarMain !== null) {
@@ -104,7 +107,7 @@ class Analyzer {
     str += generateStyle();
     str += '</main></div></div>';
     this.renderToStage(str);
-    let newscrollBarMain = document.querySelector(this.options.selector + ' .webrtc-analyzer main');
+    let newscrollBarMain = document.querySelector(`body #${this.id} .webrtc-analyzer main`);
     newscrollBarMain.scrollTop = rememberScrollTop;
   }
 
@@ -114,9 +117,9 @@ class Analyzer {
 
   toggleVisibility() {
     if (this.isVisible) {
-      document.querySelector(this.options.selector + ' .webrtc-analyzer').classList.add('hidden');
+      document.querySelector(`body #${this.id} .webrtc-analyzer`).classList.add('hidden');
     } else {
-      document.querySelector(this.options.selector + ' .webrtc-analyzer').classList.remove('hidden');
+      document.querySelector(`body #${this.id} .webrtc-analyzer`).classList.remove('hidden');
     }
     this.isVisible = !this.isVisible;
   }

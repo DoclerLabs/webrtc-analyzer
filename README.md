@@ -30,14 +30,12 @@ let wa = new WebRTCAnalyzer(options);
 
 ##### Options (public):
 
-- selector - selector for the element where the debugger gets appended to
 - peerConnection - RTCPeerConnection instance
 - interval - Data refresh interval
 - isVisible - Is the debugger visible by default
 
 ```js
 {
-    selector: '.stats', // String - body by default
     peerConnection: peerConnectionInstance, // Object - required
     interval: 3000 //Number - 3000 by default
     isVisible: true, //Boolean - true by default
@@ -50,7 +48,7 @@ let wa = new WebRTCAnalyzer(options);
 
 ### Version
 
-0.0.3
+0.0.4
 
 ### Contact
 
