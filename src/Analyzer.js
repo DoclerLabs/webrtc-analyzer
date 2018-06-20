@@ -138,6 +138,7 @@ class Analyzer {
   destroy() {
     document.removeEventListener(this.handleKeyDown);
     clearInterval(this.interval);
+    this.clearStage();
   }
 }
 
