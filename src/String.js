@@ -22,4 +22,8 @@ function generateRandom(length, capitals, minuscules, numbers) {
   return product;
 }
 
-export { generateRandom };
+function isBoolean(value) {
+  return value === true || value === false;
+}
+
+export { generateRandom, isBoolean };
