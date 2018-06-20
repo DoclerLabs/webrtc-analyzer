@@ -2,7 +2,7 @@ const webpack = require('webpack');
 const buildPath = './build';
 const path = require('path');
 const PACKAGE = require('./package.json');
-const PACKAGE_NAME = PACKAGE.name + '-' + PACKAGE.version;
+const PACKAGE_NAME = PACKAGE.name;
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const config = {

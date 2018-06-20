@@ -48,7 +48,7 @@ let wa = new WebRTCAnalyzer(options);
 
 ### Version
 
-0.0.7
+0.1.0
 
 ### Contact
 
