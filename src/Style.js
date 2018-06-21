@@ -44,6 +44,7 @@ export default function() {
         
         .webrtc-analyzer td {
             padding: 3px 10px;
+            word-wrap: break-word;
         }
         
         .webrtc-analyzer tr:nth-child(2n+1){

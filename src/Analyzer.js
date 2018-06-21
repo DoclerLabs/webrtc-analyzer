@@ -1,5 +1,5 @@
 import generateStyle from './Style.js';
-import { generateRandom } from './String';
+import { generateRandom, replaceStatID } from './String';
 
 class Analyzer {
   constructor(settings) {
@@ -90,15 +90,11 @@ class Analyzer {
 
     this.clearStage();
     let str = `<div class="webrtc-analyzer${this.generateIsVisibleClass()}"><div class="box"><main>`;
-    let trackI = 1;
     stats.forEach(stat => {
-      if (stat.type === 'track') {
-        str += this.generateHeader('Track ' + trackI);
-        str += `<table>`;
-        str += this.generateFromObject(stat);
-        str += `</table>`;
-        trackI++;
-      }
+      str += this.generateHeader(replaceStatID(stat.type));
+      str += `<table>`;
+      str += this.generateFromObject(stat);
+      str += `</table>`;
     });
     str += this.generateHeader('PeerConnection states');
     str += `<table>`;
