@@ -135,8 +135,10 @@ class Analyzer {
   }
 
   destroy() {
-    document.removeEventListener(this.handleKeyDown);
-    clearInterval(this.interval);
+    document.removeEventListener('keydown', this.handleKeyDown);
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
     this.clearStage();
   }
 }
