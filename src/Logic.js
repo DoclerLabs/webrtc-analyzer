@@ -55,6 +55,8 @@ class Logic {
 
   destroy() {
     removeSkeleton();
+    eventEmitter.removeListener(events.CHANGE_VISIBILITY, this._onVisibilityChange);
+    eventEmitter.removeListener(events.TOGGLE_VISIBILITY, this._onToggleVisibility);
     clearInterval(this.intervalFn);
   }
 }

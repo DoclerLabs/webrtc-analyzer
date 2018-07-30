@@ -16,7 +16,6 @@ const config = {
     filename: PACKAGE_NAME + '.js',
     publicPath: '/', //Where the js gets loaded from
     library: 'WebRTCAnalyzer',
-    //libraryTarget: 'umd'
     libraryTarget: 'window',
     libraryExport: 'default'
   },
@@ -24,12 +23,12 @@ const config = {
     colors: true,
     performance: true
   },
-  mode: 'development',
-  /* optimization: {
+  mode: 'production',
+  optimization: {
     minimize: true
-  }, */
+  },
   plugins: [
-    /* new UglifyJSPlugin({
+    new UglifyJSPlugin({
       uglifyOptions: {
         compress: {
           warnings: false,
@@ -40,7 +39,7 @@ const config = {
           comments: false
         }
       }
-    }) */
+    })
   ]
 };
 

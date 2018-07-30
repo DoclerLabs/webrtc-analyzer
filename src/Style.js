@@ -24,6 +24,11 @@ export default function() {
             height: 100%;
             transition: left 0.2s ease-out, top 0.2s ease-out, width 0.2s ease-out, height 0.2s ease-out;
         }
+        .webrtc-analyzer .wa-header {
+            background-color: #1e1f22;
+            position: absolute;
+            width: 100%;
+        }
         .webrtc-analyzer .wa-header select {
             width:100%;
             height: 35px;
@@ -41,15 +46,20 @@ export default function() {
             appearance: none;
             cursor:pointer;
         }
+        .webrtc-analyzer .wa-main {
+            padding-top: 80px;
+            box-sizing: border-box;
+        }
         .webrtc-analyzer .wa-main,
         .webrtc-analyzer .wa-main .wa-stat {
             height: 100%;
         }
-
+        .webrtc-analyzer .wa-stat {
+            overflow: auto;
+        }
         .webrtc-analyzer .wa-stat main {
             width: 100%;
             height: 100%;
-            overflow: auto;
         }
 
         .webrtc-analyzer .wa-stat table {

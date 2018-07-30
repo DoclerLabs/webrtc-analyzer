@@ -51,11 +51,11 @@ class Analyzer {
   }
 
   destroy() {
-    eventEmitter.removeAllListeners();
+    this._removeAll();
     this.keyhandler.destroy();
     this.navigation.destroy();
     this.logic.destroy();
-    this._removeAll();
+    eventEmitter.removeAllListeners();
   }
 }
 export default Analyzer;

@@ -28,7 +28,7 @@ function createSkeleton(isVisible) {
 }
 
 function removeSkeleton() {
-  document.querySelector(defaultSkeletonClass.holderClass);
+  document.querySelector(`.${defaultSkeletonClass.holderClass}`).remove();
 }
 
 function hideSkeleton() {

@@ -5,21 +5,32 @@ import { defaultSkeletonClass } from './skeleton';
 class Navigation {
   constructor() {
     this.elements = {};
+
+    this._onRemoveElement = this._onRemoveElement.bind(this);
+    this._onNewElement = this._onNewElement.bind(this);
     this._setListener();
   }
 
   _setListener() {
-    eventEmitter.on(events.NEW_ELEMENT, id => {
-      let isVisible = Object.keys(this.elements).length > 0;
-      eventEmitter.emit(events.CHANGE_VISIBILITY, id);
-      this.elements[id] = isVisible;
-      this._render();
-    });
+    eventEmitter.on(events.NEW_ELEMENT, this._onNewElement);
+    eventEmitter.on(events.REMOVE_ELEMENT, this._onRemoveElement);
+  }
 
-    eventEmitter.on(events.REMOVE_ELEMENT, id => {
-      delete this.elements[id];
-      this._render();
-    });
+  _onRemoveElement(id) {
+    delete this.elements[id];
+    this._render();
+  }
+
+  _onNewElement(id) {
+    let isVisible = Object.keys(this.elements).length > 0;
+    eventEmitter.emit(events.CHANGE_VISIBILITY, id);
+    this.elements[id] = isVisible;
+    this._render();
+  }
+
+  _removeListener() {
+    eventEmitter.removeListener(events.NEW_ELEMENT, this._onNewElement);
+    eventEmitter.removeListener(events.REMOVE_ELEMENT, this._onRemoveElement);
   }
 
   _onChange(event) {
@@ -64,6 +75,10 @@ class Navigation {
       select.removeEventListener('change', this._onChange);
       select.remove();
     }
+  }
+
+  destroy() {
+    this._removeListener();
   }
 }
 

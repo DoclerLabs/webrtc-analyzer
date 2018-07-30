@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+    <body>
+        Try
+        <script src="./build/webrtc-analyzer.js"></script>
+        <script>
+            var webrtcAnalyzer = new WebRTCAnalyzer({
+                interval: 3000,
+                isVisible: true
+            });
+
+            var pc1 = new RTCPeerConnection();
+            var pc2 = new RTCPeerConnection();
+
+            let id1 = webrtcAnalyzer.addPeerConnection(pc1);
+            let id2 = webrtcAnalyzer.addPeerConnection(pc2);
+        </script>
+    </body>
+</html>

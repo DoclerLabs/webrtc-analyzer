@@ -2,9 +2,12 @@
   "name": "webrtc-analyzer",
   "version": "0.1.3",
   "description": "WebRTC Connection Analyzer",
-  "main": "export.js",
+  "main": "./build/webrtc-analyzer.js",
   "scripts": {
+    "browserify": "webpack --config webpack.window.js",
+    "dev": "webpack --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
+    "prepublish": "yarn run build",
     "prettify": "prettier --config .prettierrc --write \"src/**/!(Lesshat).{less,js}\""
   },
   "repository": "https://github.com/DoclerLabs/webrtc-analyzer",
