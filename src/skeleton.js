@@ -7,7 +7,7 @@ const defaultSkeletonClass = {
   hiddenClass: 'hidden'
 };
 
-function createSkeleton(isVisible) {
+function createSkeleton(isVisible, position) {
   const skeletonChildren = `<div class="wa-holder"><header class="${
     defaultSkeletonClass.switcherClass
   }"><header>Select a PeerConnection</header></header><main class="${
@@ -18,6 +18,7 @@ function createSkeleton(isVisible) {
   if (isVisible === false) {
     skeleton.classList.add(defaultSkeletonClass.hiddenClass);
   }
+  skeleton.classList.add(`p-${position}`);
   skeleton.innerHTML = skeletonChildren;
   let body = document.querySelector('body');
   if (body !== null) {
@@ -39,4 +40,12 @@ function showSkeleton() {
   document.querySelector(`.${defaultSkeletonClass.holderClass}`).classList.remove('hidden');
 }
 
-export { defaultSkeletonClass, createSkeleton, removeSkeleton, hideSkeleton, showSkeleton };
+function moveSkeleton(newPosition, oldPosition) {
+  let holder = document.querySelector(`.${defaultSkeletonClass.holderClass}`);
+  if (holder !== null) {
+    document.querySelector(`.${defaultSkeletonClass.holderClass}`).classList.remove(`p-${oldPosition}`);
+    document.querySelector(`.${defaultSkeletonClass.holderClass}`).classList.add(`p-${newPosition}`);
+  }
+}
+
+export { defaultSkeletonClass, createSkeleton, removeSkeleton, hideSkeleton, showSkeleton, moveSkeleton };

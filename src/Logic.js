@@ -6,8 +6,8 @@ import Navigation from './Navigation';
 
 class Logic {
   constructor(options) {
-    createSkeleton();
     this.isVisible = options.isVisible;
+    createSkeleton(this.isVisible, options.position);
     this.interval = options.interval;
     this.activeId;
     this.intervalFn;

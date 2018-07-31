@@ -25,6 +25,8 @@ class KeyHandler {
       this.isCTRLDown = false;
     } else if (this.isCTRLDown && keyCode === 72) {
       eventEmitter.emit(events.TOGGLE_VISIBILITY);
+    } else if (this.isCTRLDown && keyCode === 87) {
+      eventEmitter.emit(events.TOGGLE_POSITION);
     }
   }
 

@@ -13,6 +13,9 @@ export default function() {
         .webrtc-analyzer.hidden .wa-holder {
             left: 100%;
         }
+        .webrtc-analyzer.p-left.hidden .wa-holder {
+            left: -30%;
+        }
         .webrtc-analyzer .wa-holder {
             position: fixed;
             z-index: 1;
@@ -23,6 +26,9 @@ export default function() {
             width: 30%;
             height: 100%;
             transition: left 0.2s ease-out, top 0.2s ease-out, width 0.2s ease-out, height 0.2s ease-out;
+        }
+        .webrtc-analyzer.p-left .wa-holder {
+            left: 0%;
         }
         .webrtc-analyzer .wa-header {
             background-color: #1e1f22;

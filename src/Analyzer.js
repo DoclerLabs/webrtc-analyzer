@@ -2,6 +2,7 @@ import Logic from './Logic';
 import Element from './Element';
 import Navigation from './Navigation';
 import KeyHandler from './KeyHandler';
+import MovePosition from './MovePosition';
 import eventEmitter from './eventEmitter';
 import events from './events';
 
@@ -10,7 +11,8 @@ class Analyzer {
     this.elements = [];
     let defaults = {
       interval: 3000,
-      isVisible: true
+      isVisible: true,
+      position: 'right'
     };
     this.options = { ...defaults, ...settings };
     if (typeof this.options.interval !== 'number') {
@@ -20,9 +22,15 @@ class Analyzer {
     if ((this.options.isVisible === true || this.options.isVisible === false) === false) {
       throw new Error('[WebRTC-Analyzer]: isVisible has to be a boolean (true or false).');
     }
+
+    if (this.options.position !== 'left' && this.options.position !== 'right') {
+      throw new Error('[WebRTC-Analyzer]: not available position (supported: left, right).');
+    }
+
     this.logic = new Logic(this.options);
     this.navigation = new Navigation();
     this.keyhandler = new KeyHandler();
+    this.movePosition = new MovePosition(this.options);
   }
 
   addPeerConnection(peerConnection) {
@@ -55,6 +63,7 @@ class Analyzer {
     this.keyhandler.destroy();
     this.navigation.destroy();
     this.logic.destroy();
+    this.movePosition.destroy();
     eventEmitter.removeAllListeners();
   }
 }

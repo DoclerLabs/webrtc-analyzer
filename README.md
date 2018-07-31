@@ -37,6 +37,7 @@ let wa = new WebRTCAnalyzer(options);
 {
     interval: 3000 //Number - 3000 by default
     isVisible: true, //Boolean - true by default
+    position: 'right', //String - right by default (left | right)
 }
 ```
 
@@ -67,6 +68,10 @@ After destroying the analyzer you wont be able to use it anymore. You will need 
 
 `CTRL` + `H` to toggle
 
+
+##### Move position
+
+`CTRL` + `W` to toggle
 
 ### Try it out
 Download the library and open `try.html`.
