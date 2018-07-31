@@ -1,6 +1,6 @@
 {
   "name": "webrtc-analyzer",
-  "version": "0.1.3",
+  "version": "1.0.0",
   "description": "WebRTC Connection Analyzer",
   "main": "./build/webrtc-analyzer.js",
   "scripts": {
