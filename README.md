@@ -8,13 +8,13 @@ This tool helps you to debug WebRTC connections.
 - Able to display PC statuses (`signalingState`, `iceGatheringState`, `connectionState`, `iceGatheringState`)
 - Able to display any info from PC.getStats
 - Support for multiple RTCPeerConnection instances
+- The debuggers position could be changed by the user. (left, right)
 
 ##### Desired features:
 
 - Able to display `offer` and `answer`
 - Able to display the generated ICE Candidates
 - User is able to customize what he/she wants to see
-- The debuggers position could be changed by the user. (left, top, right, bottom)
 
 
 ![WebRTC-Analyzer](https://i.imgur.com/8eLNbUQ.png)
