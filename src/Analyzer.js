@@ -1,146 +1,70 @@
-import generateStyle from './Style.js';
-import { generateRandom, replaceStatID } from './String';
+import Logic from './Logic';
+import Element from './Element';
+import Navigation from './Navigation';
+import KeyHandler from './KeyHandler';
+import MovePosition from './MovePosition';
+import eventEmitter from './eventEmitter';
+import events from './events';
 
 class Analyzer {
   constructor(settings) {
+    this.elements = [];
     let defaults = {
-      peerConnection: null,
       interval: 3000,
-      isVisible: true
+      isVisible: true,
+      position: 'right'
     };
     this.options = { ...defaults, ...settings };
-
-    this.body = document.querySelector('body');
-
-    this.id = generateRandom(10, false, true, false);
-
-    if (this.options.peerConnection instanceof RTCPeerConnection === false) {
-      throw new Error('[Analyzer]: peerConnection must be an instance of RTCPeerConnection.');
-    }
-
     if (typeof this.options.interval !== 'number') {
-      throw new Error('[Analyzer]: interval has to be a number.');
+      throw new Error('[WebRTC-Analyzer]: interval has to be a number.');
     }
 
     if ((this.options.isVisible === true || this.options.isVisible === false) === false) {
-      throw new Error('[Analyzer]: isVisible has to be a boolean (true or false).');
+      throw new Error('[WebRTC-Analyzer]: isVisible has to be a boolean (true or false).');
     }
 
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.wasCTRL = false;
-    this.isVisible = this.options.isVisible;
-
-    this.setup();
-  }
-
-  setup() {
-    this.interval = setInterval(() => {
-      this.options.peerConnection.getStats().then(stats => {
-        this.render(stats);
-      });
-    }, this.options.interval);
-    this.setKeyHandler();
-  }
-
-  generateFromPCState(title, key) {
-    return `<tr><td>${title}</td><td>${this.options.peerConnection[key]}</td></tr>`;
-  }
-
-  generateHeader(headerTitle) {
-    return `<header>${headerTitle}</header>`;
-  }
-
-  clearStage() {
-    let elementToBeRemoved = this.body.querySelector('#' + this.id);
-    if (elementToBeRemoved !== null) {
-      this.body.querySelector('#' + this.id).remove();
+    if (this.options.position !== 'left' && this.options.position !== 'right') {
+      throw new Error('[WebRTC-Analyzer]: not available position (supported: left, right).');
     }
+
+    this.logic = new Logic(this.options);
+    this.navigation = new Navigation();
+    this.keyhandler = new KeyHandler();
+    this.movePosition = new MovePosition(this.options);
   }
 
-  renderToStage(table) {
-    let aElement = document.createElement('div');
-    aElement.id = this.id;
-    aElement.innerHTML = table;
-
-    this.body.appendChild(aElement);
+  addPeerConnection(peerConnection) {
+    let element = new Element(peerConnection);
+    this.elements.push(element);
+    eventEmitter.emit(events.NEW_ELEMENT, element.id);
+    return element.id;
   }
 
-  generateFromObject(object) {
-    let str = '';
-    Object.keys(object).forEach(key => {
-      str += `<tr><td>${key}</td><td>${object[key]}</td></tr>`;
+  removePeerConnection(peerConnectionId) {
+    this.elements = this.elements.filter(function(element) {
+      let isRemovable = element.id !== peerConnectionId;
+      if (isRemovable === true) {
+        element.destroy();
+        eventEmitter.emit(events.REMOVE_ELEMENT, element.id);
+      }
+      return isRemovable;
     });
-    return str;
   }
 
-  generateIsVisibleClass() {
-    if (this.isVisible === false) {
-      return ' hidden';
-    }
-    return '';
-  }
-
-  render(stats) {
-    let scrollBarMain = document.querySelector(`body #${this.id} .webrtc-analyzer main`);
-
-    let rememberScrollTop = 0;
-    if (scrollBarMain !== null) {
-      rememberScrollTop = scrollBarMain.scrollTop;
-    }
-
-    this.clearStage();
-    let str = `<div class="webrtc-analyzer${this.generateIsVisibleClass()}"><div class="box"><main>`;
-    stats.forEach(stat => {
-      str += this.generateHeader(replaceStatID(stat.type));
-      str += `<table>`;
-      str += this.generateFromObject(stat);
-      str += `</table>`;
+  _removeAll() {
+    this.elements.forEach(element => {
+      element.destroy();
     });
-    str += this.generateHeader('PeerConnection states');
-    str += `<table>`;
-    str += this.generateFromPCState('Signaling state', 'signalingState');
-    str += this.generateFromPCState('ICE gathering state', 'iceGatheringState');
-    str += this.generateFromPCState('ICE Connection state', 'iceConnectionState');
-    str += this.generateFromPCState('Connection state', 'connectionState');
-    str += `</table>`;
-    str += generateStyle();
-    str += '</main></div></div>';
-    this.renderToStage(str);
-    let newscrollBarMain = document.querySelector(`body #${this.id} .webrtc-analyzer main`);
-    newscrollBarMain.scrollTop = rememberScrollTop;
-  }
-
-  setKeyHandler() {
-    document.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  toggleVisibility() {
-    if (this.isVisible) {
-      document.querySelector(`body #${this.id} .webrtc-analyzer`).classList.add('hidden');
-    } else {
-      document.querySelector(`body #${this.id} .webrtc-analyzer`).classList.remove('hidden');
-    }
-    this.isVisible = !this.isVisible;
-  }
-
-  handleKeyDown(event) {
-    if (this.wasCTRL && event.keyCode === 72) {
-      this.toggleVisibility();
-    }
-    if (event.keyCode === 17) {
-      this.wasCTRL = true;
-    } else {
-      this.wasCTRL = false;
-    }
+    this.elements = [];
   }
 
   destroy() {
-    document.removeEventListener('keydown', this.handleKeyDown);
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
-    this.clearStage();
+    this._removeAll();
+    this.keyhandler.destroy();
+    this.navigation.destroy();
+    this.logic.destroy();
+    this.movePosition.destroy();
+    eventEmitter.removeAllListeners();
   }
 }
-
 export default Analyzer;

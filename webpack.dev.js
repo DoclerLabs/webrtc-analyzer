@@ -6,6 +6,7 @@ const PACKAGE_NAME = PACKAGE.name;
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const config = {
+  watch: true,
   entry: './src/Analyzer.js',
   module: {
     rules: [{ test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }]
@@ -15,31 +16,14 @@ const config = {
     filename: PACKAGE_NAME + '.js',
     publicPath: '/', //Where the js gets loaded from
     library: 'WebRTCAnalyzer',
-    libraryTarget: 'umd',
+    libraryTarget: 'window',
     libraryExport: 'default'
   },
   stats: {
     colors: true,
     performance: true
   },
-  mode: 'production',
-  optimization: {
-    minimize: true
-  },
-  plugins: [
-    new UglifyJSPlugin({
-      uglifyOptions: {
-        compress: {
-          warnings: false,
-          drop_console: true,
-          drop_debugger: true
-        },
-        output: {
-          comments: false
-        }
-      }
-    })
-  ]
+  mode: 'development'
 };
 
 module.exports = config;
