@@ -74,7 +74,12 @@ After destroying the analyzer you wont be able to use it anymore. You will need 
 `CTRL` + `W` to toggle
 
 ### Try it out
-Download the library and open `try.html`.
+Download and install dependencies, build.
+```js
+yarn install
+yarn run build
+```
+Open `try.html`.
 
 
 ### Version

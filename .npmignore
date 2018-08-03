@@ -1,0 +1,13 @@
+__tests__
+.vscode
+src
+.babelrc
+.gitignore
+.prettierrc
+dom.html
+export.js
+try.html
+webpack.dev.js
+webpack.prod.js
+webpack.window.js
+yarn.lock
