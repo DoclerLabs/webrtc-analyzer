@@ -14,9 +14,8 @@ const config = {
     path: path.resolve(__dirname, 'build'),
     filename: PACKAGE_NAME + '.js',
     publicPath: '/', //Where the js gets loaded from
-    library: 'WebRTCAnalyzer',
-    libraryTarget: 'umd',
-    libraryExport: 'default'
+    library: 'webrtc-analyzer',
+    libraryTarget: 'umd'
   },
   stats: {
     colors: true,

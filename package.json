@@ -1,13 +1,12 @@
 {
   "name": "webrtc-analyzer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "WebRTC Connection Analyzer",
   "main": "./build/webrtc-analyzer.js",
   "scripts": {
     "browserify": "webpack --config webpack.window.js",
     "dev": "webpack --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "prepublish": "yarn run build",
     "prettify": "prettier --config .prettierrc --write \"src/**/!(Lesshat).{less,js}\"",
     "test": "jest",
     "test:watch": "jest --watch"
