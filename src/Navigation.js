@@ -51,7 +51,7 @@ class Navigation {
       if (this.elements[id] === true) {
         option.value = id;
       }
-      option.innerText = 'RTCPeerConnection - ' + id.slice(5);
+      option.innerText = 'RTCPeerConnection - ' + id;
       select.appendChild(option);
     }
 

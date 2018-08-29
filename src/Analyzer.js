@@ -41,13 +41,17 @@ class Analyzer {
   }
 
   removePeerConnection(peerConnectionId) {
+    let isFirstVisibleSet = false;
     this.elements = this.elements.filter(function(element) {
-      let isRemovable = element.id !== peerConnectionId;
+      let isRemovable = element.id === peerConnectionId;
       if (isRemovable === true) {
         element.destroy();
         eventEmitter.emit(events.REMOVE_ELEMENT, element.id);
+      } else if (isFirstVisibleSet === false) {
+        eventEmitter.emit(events.CHANGE_VISIBILITY, element.id);
+        isFirstVisibleSet = true;
       }
-      return isRemovable;
+      return !isRemovable;
     });
   }
 

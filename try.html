@@ -1,12 +1,12 @@
 <!doctype html>
 <html>
     <body>
-        Try
+        Try (CTRL+H to toggle)
         <script src="./build/webrtc-analyzer.js"></script>
         <script>
             var webrtcAnalyzer = new WebRTCAnalyzer({
                 interval: 3000,
-                isVisible: false,
+                isVisible: true,
                 position: 'right'
             });
 
@@ -15,6 +15,11 @@
 
             let id1 = webrtcAnalyzer.addPeerConnection(pc1);
             let id2 = webrtcAnalyzer.addPeerConnection(pc2);
+
+
+            setTimeout(() => {
+                webrtcAnalyzer.removePeerConnection(id1);
+            }, 3000)
         </script>
     </body>
 </html>
