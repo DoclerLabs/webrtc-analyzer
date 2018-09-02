@@ -4,5 +4,8 @@
     "test": {
       "presets": ["node5"]
     }
-  }
+  },
+  "plugins": [
+    ["transform-react-jsx", { "pragma":"h" }]
+  ]
 }

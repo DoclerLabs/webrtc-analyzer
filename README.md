@@ -9,6 +9,7 @@ This tool helps you to debug WebRTC connections.
 - Able to display any info from PC.getStats
 - Support for multiple RTCPeerConnection instances
 - The debuggers position could be changed by the user. (left, right)
+- Reactive component
 
 ##### Desired features:
 
@@ -21,48 +22,24 @@ This tool helps you to debug WebRTC connections.
 
 ### Example code
 
-##### Instance
+##### Reactive way
 
 ```js
-import WebRTCAnalyzer from "webrtc-analyzer";
-let wa = new WebRTCAnalyzer(options);
+import { Analyzer } from "webrtc-analyzer";
+<Analyzer peerConnections={[pc1, pc2]} isVisible={true} position="right" />
 ```
 
-##### Options (public):
 
-- interval - Data refresh interval
-- isVisible - Is the debugger visible by default
+##### Vanilla JS way
 
 ```js
-{
-    interval: 3000 //Number - 3000 by default
+import { renderWebRTCAnalyzer } from "webrtc-analyzer";
+renderWebRTCAnalyzer({
+    peerConnections: [pc1, pc2], //Array - containing RTCPeerConnection instances
     isVisible: true, //Boolean - true by default
-    position: 'right', //String - right by default (left | right)
-}
+    position: 'right' //String - right by default (left | right)
+}, '#wa-app') //Select where the component gets rendered to
 ```
-
-
-##### Add a PeerConnection:
-
-```js
-let pcId =  wa.addPeerConnection(rtcPeerConnection);
-```
-
-Feel free to add multiple peer connections.
-
-##### Remove a PeerConnection:
-
-```js
-wa.removePeerConnection(pcId);
-```
-
-##### Destroy the debugger:
-
-```js
-wa.destroy();
-```
-
-After destroying the analyzer you wont be able to use it anymore. You will need to create a new instance.
 
 ##### Show & Hide
 
@@ -79,12 +56,10 @@ Download and install dependencies, build.
 yarn install
 yarn run build
 ```
-Open `try.html`.
-
 
 ### Version
 
-1.0.2
+2.0.0
 
 ### Contact
 

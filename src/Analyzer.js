@@ -1,74 +1,142 @@
-import Logic from './Logic';
-import Element from './Element';
+import { h, Component } from 'preact';
 import Navigation from './Navigation';
-import KeyHandler from './KeyHandler';
-import MovePosition from './MovePosition';
-import eventEmitter from './eventEmitter';
-import events from './events';
+import RTCDetails from './RTCDetails';
 
-class Analyzer {
-  constructor(settings) {
-    this.elements = [];
-    let defaults = {
-      interval: 3000,
-      isVisible: true,
-      position: 'right'
-    };
-    this.options = { ...defaults, ...settings };
-    if (typeof this.options.interval !== 'number') {
-      throw new Error('[WebRTC-Analyzer]: interval has to be a number.');
-    }
+class Analyzer extends Component {
+  constructor(props) {
+    super(props);
 
-    if ((this.options.isVisible === true || this.options.isVisible === false) === false) {
+    if ((props.isVisible === true || props.isVisible === false) === false) {
       throw new Error('[WebRTC-Analyzer]: isVisible has to be a boolean (true or false).');
     }
 
-    if (this.options.position !== 'left' && this.options.position !== 'right') {
+    if (props.position !== 'left' && props.position !== 'right') {
       throw new Error('[WebRTC-Analyzer]: not available position (supported: left, right).');
     }
 
-    this.logic = new Logic(this.options);
-    this.navigation = new Navigation();
-    this.keyhandler = new KeyHandler();
-    this.movePosition = new MovePosition(this.options);
+    this.state = {
+      isVisible: this.props.isVisible,
+      position: this.props.position,
+      selectedPC: 0,
+      rtcStats: []
+    };
+
+    this.opt = {};
+    this.opt.isCTRLDown = false;
+    this.onNavigationChange = this.onNavigationChange.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleKeyUp = this.handleKeyUp.bind(this);
+    this.refreshState = this.refreshState.bind(this);
+    this.setListeners();
+    this.refreshState();
   }
 
-  addPeerConnection(peerConnection) {
-    let element = new Element(peerConnection);
-    this.elements.push(element);
-    eventEmitter.emit(events.NEW_ELEMENT, element.id);
-    return element.id;
+  setListeners() {
+    document.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('keyup', this.handleKeyUp);
   }
 
-  removePeerConnection(peerConnectionId) {
-    let isFirstVisibleSet = false;
-    this.elements = this.elements.filter(function(element) {
-      let isRemovable = element.id === peerConnectionId;
-      if (isRemovable === true) {
-        element.destroy();
-        eventEmitter.emit(events.REMOVE_ELEMENT, element.id);
-      } else if (isFirstVisibleSet === false) {
-        eventEmitter.emit(events.CHANGE_VISIBILITY, element.id);
-        isFirstVisibleSet = true;
-      }
-      return !isRemovable;
+  removeListeners() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('keyup', this.handleKeyUp);
+  }
+
+  async refreshState(peerConnection) {
+    let rtcStatsReport = await (this.props.peerConnections[this.state.selectedPC] || peerConnection).getStats();
+
+    let rtcStats = [];
+    rtcStatsReport.forEach(report => {
+      rtcStats.push(report);
+    });
+
+    this.setState({
+      rtcStats: rtcStats
     });
   }
 
-  _removeAll() {
-    this.elements.forEach(element => {
-      element.destroy();
-    });
-    this.elements = [];
+  handleKeyDown({ keyCode }) {
+    if (keyCode === 17) {
+      this.opt.isCTRLDown = true;
+    }
   }
 
-  destroy() {
-    this._removeAll();
-    this.keyhandler.destroy();
-    this.navigation.destroy();
-    this.logic.destroy();
-    this.movePosition.destroy();
-    eventEmitter.removeAllListeners();
+  handleKeyUp({ keyCode }) {
+    if (keyCode === 17) {
+      this.opt.isCTRLDown = false;
+    } else if (this.opt.isCTRLDown && keyCode === 72) {
+      this.toggleVisibility();
+    } else if (this.opt.isCTRLDown && keyCode === 87) {
+      this.togglePosition();
+    }
+  }
+
+  toggleVisibility() {
+    this.setState({
+      isVisible: !this.state.isVisible
+    });
+  }
+
+  togglePosition() {
+    this.setState({
+      position: this.state.position === 'right' ? 'left' : 'right'
+    });
+  }
+
+  componentWillReceiveProps(props) {
+    let selectedState = this.state.selectedPC;
+    if (this.state.selectedPC > props.peerConnections.length - 1) {
+      selectedState = 0;
+      this.setState({
+        selectedPC: selectedState
+      });
+    }
+
+    this.refreshState(props.peerConnections[selectedState]);
+  }
+
+  componentWillUnmount() {
+    this.removeListeners();
+  }
+
+  onNavigationChange(key) {
+    this.setState({ selectedPC: key });
+  }
+
+  generateDirectionClass() {
+    return this.state.position === 'right' ? '' : 'p-left';
+  }
+
+  generateVisibilityClass() {
+    return this.state.isVisible ? '' : 'hidden';
+  }
+
+  render() {
+    if (this.props.peerConnections.length > 0) {
+      return (
+        <div className={`webrtc-analyzer ${this.generateDirectionClass()} ${this.generateVisibilityClass()}`}>
+          <main className="wa-holder">
+            <Navigation
+              peerConnections={this.props.peerConnections}
+              onChange={this.onNavigationChange}
+              onRefresh={this.refreshState}
+            />
+            <section className="wa-main">
+              <RTCDetails
+                rtcStats={this.state.rtcStats}
+                rtcPeerConnection={this.props.peerConnections[this.state.selectedPC]}
+              />
+            </section>
+          </main>
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
+Analyzer.defaultProps = {
+  isVisible: true,
+  position: 'right',
+  peerConnections: []
+};
 export default Analyzer;
