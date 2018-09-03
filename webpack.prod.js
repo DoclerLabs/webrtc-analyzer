@@ -6,9 +6,26 @@ const PACKAGE_NAME = PACKAGE.name;
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 const config = {
-  entry: './src/Analyzer.js',
+  entry: './src/App.js',
   module: {
-    rules: [{ test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }]
+    rules: [{ test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }, {
+      test: /\.css$/,
+      use: [
+        {
+          loader: 'style-loader',
+          options: {
+            sourceMap: true,
+            convertToAbsoluteUrls: true
+          }
+        },
+        {
+          loader: 'css-loader',
+          options: {
+            sourceMap: true
+          }
+        }
+      ]
+    }]
   },
   output: {
     path: path.resolve(__dirname, 'build'),
