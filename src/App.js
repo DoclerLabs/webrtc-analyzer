@@ -3,7 +3,7 @@ import Analyzer from './Analyzer';
 import CSS from './analyzer.css';
 
 let root = null;
-function renderWebRTCAnalyzer(options, appendTo) {
+function renderWebRTCAnalyzer(options, appendTo = 'body') {
   root = render(<Analyzer {...options} />, document.querySelector(appendTo), root);
 }
 

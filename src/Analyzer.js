@@ -41,17 +41,23 @@ class Analyzer extends Component {
     document.removeEventListener('keyup', this.handleKeyUp);
   }
 
-  async refreshState(peerConnection) {
-    let rtcStatsReport = await (this.props.peerConnections[this.state.selectedPC] || peerConnection).getStats();
+  async refreshState() {
+    if(this.props.peerConnections.length > 0) {
+      let rtcStatsReport = await this.props.peerConnections[this.state.selectedPC].getStats();
 
-    let rtcStats = [];
-    rtcStatsReport.forEach(report => {
-      rtcStats.push(report);
-    });
-
-    this.setState({
-      rtcStats: rtcStats
-    });
+      let rtcStats = [];
+      rtcStatsReport.forEach(report => {
+        rtcStats.push(report);
+      });
+      this.setState({
+        rtcStats: rtcStats
+      });
+    }
+    else {
+      this.setState({
+        rtcStats: []
+      });
+    }
   }
 
   handleKeyDown({ keyCode }) {
@@ -90,8 +96,8 @@ class Analyzer extends Component {
         selectedPC: selectedState
       });
     }
-
-    this.refreshState(props.peerConnections[selectedState]);
+    
+    this.refreshState();
   }
 
   componentWillUnmount() {
@@ -100,6 +106,7 @@ class Analyzer extends Component {
 
   onNavigationChange(key) {
     this.setState({ selectedPC: key });
+    this.refreshState();
   }
 
   generateDirectionClass() {
