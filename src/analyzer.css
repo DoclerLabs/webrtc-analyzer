@@ -35,9 +35,13 @@
     padding-bottom: 5px;
 }
 .webrtc-analyzer .wa-header .button-holder {
-    display: inline-block;
+    display: block;
     padding: 0 10px;
     box-sizing: border-box;
+}
+
+.webrtc-analyzer .wa-header button {
+    display: inline-block;
 }
 
 .webrtc-analyzer .wa-header button {
@@ -53,7 +57,7 @@
 }
 
 .webrtc-analyzer .wa-header select {
-    display: inline-block;
+    display: block;
     height: 35px;
     border: 0;
     border-radius: 0;
@@ -66,10 +70,12 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    cursor:pointer;
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
 }
 .webrtc-analyzer .wa-main {
-    padding-top: 85px;
+    padding-top: 145px;
     box-sizing: border-box;
 }
 .webrtc-analyzer .wa-main,
@@ -115,4 +121,33 @@
     padding: 10px 20px;
     background-color: #383b40;
     margin-bottom: 6px;
+}
+
+.webrtc-analyzer .invisible-button {
+    display: none;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    height: 35px;
+    border-radius: 0;
+    margin: 5px 0 0;
+    background-color: #383b40;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+}
+
+.webrtc-analyzer.hidden .invisible-button {
+    display: block;
+}
+
+@media screen and (max-width: 768px) {
+    .webrtc-analyzer .wa-holder {
+        width: 90%;
+        left: 10%;
+    }
+
+    .webrtc-analyzer.p-left.hidden .wa-holder {
+        left: -90%;
+    }
 }

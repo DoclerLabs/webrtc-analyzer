@@ -27,6 +27,7 @@ class Analyzer extends Component {
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.handleKeyUp = this.handleKeyUp.bind(this);
     this.refreshState = this.refreshState.bind(this);
+    this.toggleVisibility = this.toggleVisibility.bind(this);
     this.setListeners();
     this.refreshState();
   }
@@ -42,7 +43,7 @@ class Analyzer extends Component {
   }
 
   async refreshState() {
-    if(this.props.peerConnections.length > 0) {
+    if (this.props.peerConnections.length > 0) {
       let rtcStatsReport = await this.props.peerConnections[this.state.selectedPC].getStats();
 
       let rtcStats = [];
@@ -52,8 +53,7 @@ class Analyzer extends Component {
       this.setState({
         rtcStats: rtcStats
       });
-    }
-    else {
+    } else {
       this.setState({
         rtcStats: []
       });
@@ -96,7 +96,7 @@ class Analyzer extends Component {
         selectedPC: selectedState
       });
     }
-    
+
     this.refreshState();
   }
 
@@ -121,9 +121,13 @@ class Analyzer extends Component {
     if (this.props.peerConnections.length > 0) {
       return (
         <div className={`webrtc-analyzer ${this.generateDirectionClass()} ${this.generateVisibilityClass()}`}>
+          <button onClick={this.toggleVisibility} className="invisible-button">
+            Show WebRTC Analyzer
+          </button>
           <main className="wa-holder">
             <Navigation
               peerConnections={this.props.peerConnections}
+              onMinimize={this.toggleVisibility}
               onChange={this.onNavigationChange}
               onRefresh={this.refreshState}
             />

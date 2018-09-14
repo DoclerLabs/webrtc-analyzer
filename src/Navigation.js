@@ -10,6 +10,10 @@ class Navigation extends Component {
     this.props.onChange(event.target.value);
   }
 
+  onMinimize() {
+    this.props.onMinimize();
+  }
+
   render() {
     return (
       <nav className="wa-header">
@@ -21,6 +25,7 @@ class Navigation extends Component {
         </select>
         <div className="button-holder">
           <button onClick={this.props.onRefresh}>Refresh</button>
+          <button onClick={this.props.onMinimize}>Hide WebRTC Analyzer</button>
         </div>
       </nav>
     );

@@ -8,24 +8,27 @@ const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const config = {
   entry: './src/App.js',
   module: {
-    rules: [{ test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }, {
-      test: /\.css$/,
-      use: [
-        {
-          loader: 'style-loader',
-          options: {
-            sourceMap: true,
-            convertToAbsoluteUrls: true
+    rules: [
+      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              sourceMap: true,
+              convertToAbsoluteUrls: true
+            }
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
           }
-        },
-        {
-          loader: 'css-loader',
-          options: {
-            sourceMap: true
-          }
-        }
-      ]
-    }]
+        ]
+      }
+    ]
   },
   output: {
     path: path.resolve(__dirname, 'build'),
