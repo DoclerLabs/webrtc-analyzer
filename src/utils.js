@@ -46,4 +46,4 @@ function replaceStatID(type) {
   return 'Unknown';
 }
 
-export { generateRandom, isBoolean, replaceStatID };
+export { replaceStatID };

@@ -6,29 +6,20 @@ const PACKAGE_NAME = PACKAGE.name;
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const fs = require('fs');
+
 const config = {
   mode: 'development',
   entry: './src/App.js',
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
       {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader',
-            options: {
-              sourceMap: true,
-              convertToAbsoluteUrls: true
-            }
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
-            }
-          }
-        ]
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env']
+        }
       }
     ]
   },
@@ -37,6 +28,11 @@ const config = {
     filename: PACKAGE_NAME + '.js',
     publicPath: '/'
   },
+  resolve: {
+    alias: {
+      react: path.resolve(__dirname, './src/React.js')
+    }
+  },
   stats: {
     colors: true,
     performance: true
@@ -44,7 +40,7 @@ const config = {
   devtool: 'source-map',
   devServer: {
     port: 3000,
-    host: 'localhost',
+    host: '0.0.0.0',
     publicPath: '/',
     historyApiFallback: true,
     open: true,

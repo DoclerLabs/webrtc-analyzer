@@ -1,6 +1,5 @@
-import { h, render, rerender } from 'preact';
+import { h, render } from 'preact';
 import Analyzer from './Analyzer';
-import CSS from './analyzer.css';
 
 let root = null;
 function renderWebRTCAnalyzer(options, appendTo = 'body') {

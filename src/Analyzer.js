@@ -1,6 +1,77 @@
+import '@babel/polyfill';
 import { h, Component } from 'preact';
 import Navigation from './Navigation';
 import RTCDetails from './RTCDetails';
+import { Button } from './BasicElements';
+import styled from 'styled-components';
+
+const ShowWAButton = styled(Button)`
+  display: ${props => (props.isVisible ? 'none' : 'block')};
+  position: fixed;
+  right: 0;
+  bottom: 0;
+`;
+
+const WebRTCAnalyzer = styled.div`
+  position: fixed;
+  width: 0px;
+  height: 0px;
+  top: 0px;
+  left: 0px;
+  z-index: 99999999;
+  font-family: monaco, Consolas, 'Lucida Console', monospace;
+  font-size: 12px;
+`;
+
+const WAContent = styled.main`
+  position: fixed;
+  z-index: 1;
+  box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 4px;
+  background-color: #1e1f22;
+  left: ${props => {
+    if (props.isVisible === false && props.position === 'right') {
+      return '100%';
+    }
+
+    if (props.isVisible === false && props.position === 'left') {
+      return '-30%';
+    }
+
+    if (props.isVisible === true && props.position === 'left') {
+      return '0%';
+    }
+
+    return '70%';
+  }};
+  top: 0px;
+  width: 30%;
+  height: 100%;
+  transition: left 0.2s ease-out, top 0.2s ease-out, width 0.2s ease-out, height 0.2s ease-out;
+  @media screen and (max-width: 768px) {
+    width: 90%;
+    left: ${props => {
+      if (props.isVisible === false && props.position === 'right') {
+        return '100%';
+      }
+
+      if (props.isVisible === false && props.position === 'left') {
+        return '-90%';
+      }
+
+      if (props.isVisible === true && props.position === 'left') {
+        return '0%';
+      }
+
+      return '10%';
+    }};
+  }
+`;
+
+const RTCDetailsHolder = styled.section`
+  padding-top: 155px;
+  box-sizing: border-box;
+  height: 100%;
+`;
 
 class Analyzer extends Component {
   constructor(props) {
@@ -120,34 +191,36 @@ class Analyzer extends Component {
   render() {
     if (this.props.peerConnections.length > 0) {
       return (
-        <div className={`webrtc-analyzer ${this.generateDirectionClass()} ${this.generateVisibilityClass()}`}>
-          <button onClick={this.toggleVisibility} className="invisible-button">
+        <WebRTCAnalyzer>
+          <ShowWAButton onClick={this.toggleVisibility} isVisible={this.state.isVisible}>
             Show WebRTC Analyzer
-          </button>
-          <main className="wa-holder">
+          </ShowWAButton>
+          <WAContent isVisible={this.state.isVisible} position={this.state.position}>
             <Navigation
               peerConnections={this.props.peerConnections}
               onMinimize={this.toggleVisibility}
               onChange={this.onNavigationChange}
               onRefresh={this.refreshState}
             />
-            <section className="wa-main">
+            <RTCDetailsHolder>
               <RTCDetails
                 rtcStats={this.state.rtcStats}
                 rtcPeerConnection={this.props.peerConnections[this.state.selectedPC]}
               />
-            </section>
-          </main>
-        </div>
+            </RTCDetailsHolder>
+          </WAContent>
+        </WebRTCAnalyzer>
       );
     } else {
       return null;
     }
   }
 }
+
 Analyzer.defaultProps = {
   isVisible: true,
   position: 'right',
   peerConnections: []
 };
+
 export default Analyzer;

@@ -1,5 +1,17 @@
 import { h, Component } from 'preact';
 import { replaceStatID } from './utils';
+import { Table, Tr, Td, Title } from './BasicElements';
+import styled from 'styled-components';
+
+const RTCDetailsStyle = styled.div`
+  height: 100%;
+  overflow: auto;
+`;
+
+const Main = styled.main`
+  width: 100%;
+  height: 100%;
+`;
 
 class RTCDetails extends Component {
   constructor(props) {
@@ -7,52 +19,52 @@ class RTCDetails extends Component {
   }
 
   generateHeader(headerTitle) {
-    return <header>{headerTitle}</header>;
+    return <Title>{headerTitle}</Title>;
   }
 
   generateFromObject(object) {
     return Object.keys(object).map(key => {
       return (
-        <tr>
-          <td>{key}</td>
-          <td>{object[key] || 'N/A'}</td>
-        </tr>
+        <Tr>
+          <Td>{key}</Td>
+          <Td>{object[key] || 'N/A'}</Td>
+        </Tr>
       );
     });
   }
 
   generateFromPCState(title, key) {
     return (
-      <tr>
-        <td>{title}</td>
-        <td>{this.props.rtcPeerConnection[key] || 'N/A'}</td>
-      </tr>
+      <Tr>
+        <Td>{title}</Td>
+        <Td>{this.props.rtcPeerConnection[key] || 'N/A'}</Td>
+      </Tr>
     );
   }
 
   render() {
     return (
-      <div className="wa-stat">
-        <div className="box">
-          <main>
+      <RTCDetailsStyle>
+        <div>
+          <Main>
             {this.props.rtcStats.map(stat => {
               return (
                 <div>
                   {this.generateHeader(replaceStatID(stat.type))}
-                  <table>{this.generateFromObject(stat)}</table>
+                  <Table>{this.generateFromObject(stat)}</Table>
                 </div>
               );
             })}
             {this.generateHeader('PeerConnection states')}
-            <table>
+            <Table>
               {this.generateFromPCState('Signaling state', 'signalingState')}
               {this.generateFromPCState('ICE gathering state', 'iceGatheringState')}
               {this.generateFromPCState('ICE Connection state', 'iceConnectionState')}
               {this.generateFromPCState('Connection state', 'connectionState')}
-            </table>
-          </main>
+            </Table>
+          </Main>
         </div>
-      </div>
+      </RTCDetailsStyle>
     );
   }
 }

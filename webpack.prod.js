@@ -9,24 +9,13 @@ const config = {
   entry: './src/App.js',
   module: {
     rules: [
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
       {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader',
-            options: {
-              sourceMap: true,
-              convertToAbsoluteUrls: true
-            }
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
-            }
-          }
-        ]
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env']
+        }
       }
     ]
   },
@@ -44,6 +33,11 @@ const config = {
   mode: 'production',
   optimization: {
     minimize: true
+  },
+  resolve: {
+    alias: {
+      react: path.resolve(__dirname, './src/React.js')
+    }
   },
   plugins: [
     new UglifyJSPlugin({

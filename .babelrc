@@ -1,11 +1,24 @@
 {
-  "presets": ["stage-3"],
+  "presets": [[
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "current"
+        }
+      }
+    ], "@babel/preset-react"],
   "env": {
     "test": {
       "presets": ["node5"]
     }
   },
   "plugins": [
-    ["transform-react-jsx", { "pragma":"h" }]
+    [
+      "transform-react-jsx",
+      {
+        "pragma": "h"
+      }
+    ],
+    "styled-components"
   ]
 }
