@@ -4,6 +4,7 @@ const path = require('path');
 const PACKAGE = require('./package.json');
 const PACKAGE_NAME = PACKAGE.name;
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 
 const config = {
   entry: './src/App.js',
@@ -19,6 +20,8 @@ const config = {
       }
     ]
   },
+  externals: [nodeExternals()],
+  target: 'node',
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: PACKAGE_NAME + '.js',
