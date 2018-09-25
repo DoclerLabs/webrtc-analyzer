@@ -1,6 +1,6 @@
 {
   "name": "webrtc-analyzer",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "WebRTC Connection Analyzer",
   "main": "./build/webrtc-analyzer.js",
   "scripts": {
@@ -17,6 +17,9 @@
     "preact": "^8.3.1",
     "styled-components": "^3.4.6",
     "webpack-node-externals": "^1.7.2"
+  },
+  "publishConfig": {
+    "registry": "https://ip-109-71-162-126.dditscdn.com/nexus/repository/docler-npm"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",
